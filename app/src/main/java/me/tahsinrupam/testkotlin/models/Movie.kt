@@ -8,9 +8,9 @@ package me.tahsinrupam.testkotlin.models
 
 class Movie {
     private var title: String? = null
-    private val thumbnailUrl: String? = null
-    private val year: Int = 0
-    private val rating: Double = 0.toDouble()
+    private var thumbnailUrl: String? = null
+    private var year: Int = 0
+    private var rating: Double = 0.toDouble()
     private val genre: ArrayList<String>? = null
 
 
@@ -22,7 +22,33 @@ class Movie {
         this.title = title
     }
 
+    fun getThumbUrl(): String ? {
+        return thumbnailUrl
+    }
 
+    fun setThumbUrl(thumbnailUrl: String) {
+        this.thumbnailUrl = thumbnailUrl
+    }
+
+    fun getReleaseYear(): Int {
+        return year
+    }
+
+    fun setReleaseYear(year : Int) {
+        this.year = year
+    }
+
+    fun getRating(): Double {
+        return rating
+    }
+
+    fun setRating(year : Double) {
+        this.rating = rating
+    }
+
+    fun getGenre() : ArrayList<String>? {
+        return genre
+    }
 
 
 }

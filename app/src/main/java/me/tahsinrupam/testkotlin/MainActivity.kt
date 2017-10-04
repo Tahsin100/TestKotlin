@@ -13,12 +13,9 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 import me.tahsinrupam.testkotlin.models.Movie
-import me.tahsinrupam.testkotlin.models.RestaurantOutlet
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -38,20 +35,31 @@ class MainActivity : AppCompatActivity() {
 
 
                            val movie  =  Movie ()
-                            val jsonArrayRestCol :JSONArray = response.getJSONObject("data").getJSONArray("items")
-                            val count : Int  =  jsonArrayRestCol.length()
-                            val restaurants: MutableList<Movie> = mutableListOf()
-                            val readOnlyView: List<Movie> = restaurants
+                            val count : Int  =  response.length()
+                            val movies: MutableList<Movie> = mutableListOf()
+                            val readOnlyView: List<Movie> = movies
 
                              repeat(count){ i ->
 
-                                 val singleResJsonObj : JSONObject ? = jsonArrayRestCol.getJSONObject(i)
-                                 if (singleResJsonObj != null) {
-                                     movie.setMovieTitle(singleResJsonObj.getString("name"))
+                                 val singleMovieJsonObj : JSONObject ? = response.getJSONObject(i)
+                                 if (singleMovieJsonObj != null) {
+                                     movie.setMovieTitle(singleMovieJsonObj.getString("title"))
+                                     movie.setThumbUrl(singleMovieJsonObj.getString("image"))
+                                     movie.setThumbUrl(singleMovieJsonObj.getString("rating"))
+                                     movie.setReleaseYear(singleMovieJsonObj.getInt("releaseYear"))
 
+                                     val genreArray : JSONArray ? = singleMovieJsonObj.getJSONArray("genre")
+                                     val genre: MutableList<String> = mutableListOf()
+                                     val readOnlyViewG: List<String> = genre
+                                     if (genreArray != null) {
+                                         repeat(genre.size){ k ->
+                                             genre += genreArray.get(k).toString()
+                                         }
+                                         
+                                     }
                                  }
-                                 restaurants += restaurantOutlet
-                                 Toast.makeText(applicationContext, restaurants[i].getRestaurantName(), Toast.LENGTH_SHORT).show()
+                                 movies += movie
+                                 Toast.makeText(applicationContext, movies[i].getMoviewTitle(), Toast.LENGTH_SHORT).show()
 
                         }
             },
