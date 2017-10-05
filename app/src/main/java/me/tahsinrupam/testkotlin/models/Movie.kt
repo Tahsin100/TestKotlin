@@ -11,7 +11,7 @@ class Movie {
     private var thumbnailUrl: String? = null
     private var year: Int = 0
     private var rating: Double = 0.toDouble()
-    private val genre: ArrayList<String>? = null
+    private var genre: List<String>? = null
 
 
     fun getMoviewTitle(): String ? {
@@ -46,8 +46,12 @@ class Movie {
         this.rating = rating
     }
 
-    fun getGenre() : ArrayList<String>? {
+    fun getGenre() : List<String>? {
         return genre
+    }
+
+    fun setGenre(genre : List<String>)  {
+        this.genre =  genre
     }
 
 
