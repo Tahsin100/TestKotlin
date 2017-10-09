@@ -6,8 +6,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.widget.TextView
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -54,19 +55,15 @@ class MainActivity : AppCompatActivity() {
         val request = JsonArrayRequest (Request.Method.GET, url , null,
                 Response.Listener <JSONArray> { response ->
 
-                    val movie  =  Movie ()
                     val count : Int  =  response.length()
-                    var movies : MutableList<Movie>  = mutableListOf()
+                    var movies   = ArrayList<Movie> ()
                     val readOnlyView: List<Movie> = movies as MutableList<Movie>
 
                     repeat(count){ i ->
 
                         val singleMovieJsonObj : JSONObject ? = response.getJSONObject(i)
                         if (singleMovieJsonObj != null) {
-                            movie.setMovieTitle(singleMovieJsonObj.getString("title"))
-                            movie.setThumbUrl(singleMovieJsonObj.getString("image"))
-                            movie.setThumbUrl(singleMovieJsonObj.getString("rating"))
-                            movie.setReleaseYear(singleMovieJsonObj.getInt("releaseYear"))
+
 
                             val genreArray : JSONArray ? = singleMovieJsonObj.getJSONArray("genre")
                             val genre: MutableList<String> = mutableListOf()
@@ -76,14 +73,16 @@ class MainActivity : AppCompatActivity() {
                                     genre += genreArray.get(k).toString()
                                     Log.d("genre->", genre[k])
                                 }
-                                movie.setGenre(genre)
                             }
-
+                            movies.add(Movie(singleMovieJsonObj.getString("title"), singleMovieJsonObj.getString("image"),singleMovieJsonObj.getDouble("rating") , singleMovieJsonObj.getInt("releaseYear"), genre))
                         }
-                        movies!!.add(movie)
-                        recyclerViewMovie.adapter = MovieRecyclerAdapter(movies)
 
                     }
+
+                    val movieAdapter = MovieRecyclerAdapter(movies)
+
+                    recyclerViewMovie.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+                    recyclerViewMovie.adapter = movieAdapter
 
                 },
                 Response.ErrorListener {

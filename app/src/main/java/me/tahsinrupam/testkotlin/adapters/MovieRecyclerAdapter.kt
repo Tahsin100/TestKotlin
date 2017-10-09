@@ -19,9 +19,13 @@ import me.tahsinrupam.testkotlin.models.Movie
 class MovieRecyclerAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Adapter<MovieRecyclerAdapter.ViewHolder>() {
 
     //this method is returning the view for each item in the list
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieRecyclerAdapter.ViewHolder {
+   /* override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieRecyclerAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.single_movie_layout, parent, false)
         return ViewHolder(v)
+    }*/
+
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     //this method is binding the data on the list
@@ -40,11 +44,18 @@ class MovieRecyclerAdapter(private val movieList: MutableList<Movie>) : Recycler
         fun bindItems(user: Movie) {
 
             Picasso.with(itemView.context)
-                    .load(user.getThumbUrl())
+                    .load(user.thumbUrl)
                     .into(itemView.imageViewThumb)
+            itemView.textViewGenre.text = "Genre: "
+            itemView.textViewTitle.text=user.title
+            itemView.textViewRating.text = "Rating: " + user.rating.toString()
+            repeat(user.genre.size)  { i ->
+                itemView.textViewGenre.append(user.genre[i])
+                if(i < user.genre.size - 1)
+                    itemView.textViewGenre.append(", ")
+            }
 
-            itemView.textViewTitle.text=user.getMoviewTitle()
-            itemView.textViewRating.text= user.getRating().toString()
+            itemView.textViewYear.text = user.year.toString()
 
         }
     }
